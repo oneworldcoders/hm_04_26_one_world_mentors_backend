@@ -1,5 +1,7 @@
 # README
 
+[![Build Status](https://travis-ci.org/oneworldcoders/hm_04_26_one_world_mentors_backend.svg?branch=develop)](https://travis-ci.org/oneworldcoders/hm_04_26_one_world_mentors_backend)
+
 This README would normally document whatever steps are necessary to get the
 application up and running.
 
