@@ -13,7 +13,6 @@ RSpec.describe "Users", type: :request do
           user.save
           get "/mentors"
           expect(response.body).to include("mike")
-
         end
     end
 end
