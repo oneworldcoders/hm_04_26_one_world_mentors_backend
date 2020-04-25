@@ -3,9 +3,9 @@ require 'rails_helper'
 RSpec.describe "User", type: :request do
 
   describe "GET /index" do
-    it "returns http success" do
-      get "/user/index"
-      expect(response).to have_http_status(:success)
+    it "returns welcome message" do
+      get '/'
+      expect(response.body['message']).to include('message')
     end
   end
 
