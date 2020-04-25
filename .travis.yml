@@ -5,7 +5,6 @@ services:
   - postgresql
 
 before_script:
-  - psql -c 'create user root with superuser;' -U henryokonkwo
   - psql -c 'create database one_world_mentors_backend_test;' -U postgres
   
 
