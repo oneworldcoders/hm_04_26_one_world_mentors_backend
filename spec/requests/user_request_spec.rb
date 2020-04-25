@@ -24,4 +24,22 @@ RSpec.describe "User", type: :request do
     end
   end
 
+  context 'update_user' do
+    it 'update a user profile' do
+      user = User.create(first_name: 'Julius', last_name: 'Ngwu', email:'julius@1', password:'julius@@1', user_type:'mentee' )
+      patch "/user/profile/#{user.id}", params: { first_name:'Ebuka', last_name: 'Ngwu', email:'ebuka@1', user_type:'mentor' }.to_json
+      
+      updated_user = JSON.parse(response.body)
+      expect(updated_user["first_name"]).to eq("Ebuka")
+      expect(updated_user["email"]).to eq("ebuka@1")
+      expect(updated_user["user_type"]).to eq("mentor")
+    end
+    it 'should return default profile' do
+      user = User.create(first_name: 'Julius', last_name: 'Ngwu', email:'julius@1', password:'julius@@1', user_type:'mentee' )
+      patch "/user/profile/#{user.id}", params: { first_name:'', last_name: '', email:'', user_type:'' }.to_json
+      expect(response.body).to include('error')
+
+    end
+  end
+
 end
