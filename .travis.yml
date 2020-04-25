@@ -5,8 +5,9 @@ services:
   - postgresql
 
 before_script:
+  - psql -c 'create user root with superuser;' -U henryokonkwo
   - psql -c 'create database one_world_mentors_backend_test;' -U postgres
-  - psql -c 'create user root with superuser;' -U postgres
+  
 
 script:
   - bundle exec rake db:migrate RAILS_ENV=test
