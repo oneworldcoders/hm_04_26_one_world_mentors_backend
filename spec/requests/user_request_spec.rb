@@ -1,6 +1,14 @@
 require 'rails_helper'
 
 RSpec.describe "User", type: :request do
+  headers = nil
+  auth_headers = nil
+  before do
+    User.create(first_name: "Julius", last_name: "Ngwu", email: "julius@gmail.com", password: "julius@1", user_type: "mentee")
+    post "/login", params: { "email" => "julius@gmail.com", "password" => "julius@1" }
+    user_info = JSON.parse(response.body)
+    auth_headers = { "Authorization" => "Bearer " + user_info["token"] }
+  end
 
   describe "GET /index" do
     it "returns welcome message" do
@@ -27,7 +35,7 @@ RSpec.describe "User", type: :request do
   context 'update_user' do
     it 'update a user profile' do
       user = User.create(first_name: 'Julius', last_name: 'Ngwu', email:'julius@1', password:'julius@@1', user_type:'mentee' )
-      patch "/user/profile/#{user.id}", params: { first_name:'Ebuka', last_name: 'Ngwu', email:'ebuka@1', user_type:'mentor' }.to_json
+      patch "/user/profile/#{user.id}", params: { first_name:'Ebuka', last_name: 'Ngwu', email:'ebuka@1', user_type:'mentor' }.to_json, headers: auth_headers
       
       updated_user = JSON.parse(response.body)
       expect(updated_user["first_name"]).to eq("Ebuka")
@@ -36,7 +44,7 @@ RSpec.describe "User", type: :request do
     end
     it 'should return default profile' do
       user = User.create(first_name: 'Julius', last_name: 'Ngwu', email:'julius@1', password:'julius@@1', user_type:'mentee' )
-      patch "/user/profile/#{user.id}", params: { first_name:'', last_name: '', email:'', user_type:'' }.to_json
+      patch "/user/profile/#{user.id}", params: { first_name:'', last_name: '', email:'', user_type:'' }.to_json, headers: auth_headers
       expect(response.body).to include('error')
 
     end
