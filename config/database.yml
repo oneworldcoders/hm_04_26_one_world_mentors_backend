@@ -10,7 +10,7 @@ default: &default
   timeout: 5000
   encoding: unicode
   username: postgres
-  password: psql
+  password: postgres
 
 development:
   <<: *default
