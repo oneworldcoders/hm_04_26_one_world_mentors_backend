@@ -3,4 +3,5 @@ Rails.application.routes.draw do
   get 'user/index'
   post 'signup', to: 'user#signup'
   get 'mentors', to: 'mentors#mentors'
+  get 'courses', to: 'courses#courses'
 end
