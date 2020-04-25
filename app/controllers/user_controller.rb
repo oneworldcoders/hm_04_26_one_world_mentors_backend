@@ -1,5 +1,6 @@
 class UserController < ApplicationController
   def index
+    render json: {message: 'Welcome to One world Mentor'}, status: 200
   end
 
   def signup
