@@ -16,6 +16,26 @@ class UserController < ApplicationController
     end
   end
 
+  def update_user
+    current_user = User.find(params[:id])
+    payload = JSON.parse(request.body.read)
+
+    current_user.first_name = payload['first_name']
+    current_user.email = payload['email']
+    current_user.user_type = payload['last_name']
+    current_user.user_type = payload['password']
+    current_user.user_type = payload['user_type']
+    
+    
+    if current_user.valid?
+      current_user.save
+      render json: current_user, status: 200
+    else
+      render json: current_user.errors.details, status: 500
+    end
+
+  end
+
   private
   def user_params
     params.require(:user).permit(:first_name, :last_name, :email, :password, :user_type)
