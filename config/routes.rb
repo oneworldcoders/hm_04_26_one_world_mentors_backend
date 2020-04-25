@@ -4,4 +4,5 @@ Rails.application.routes.draw do
   post 'signup', to: 'user#signup'
   patch 'user/profile/:id', to: 'user#update_user'
   get 'mentors', to: 'mentors#mentors'
+  get 'courses', to: 'courses#courses'
 end
