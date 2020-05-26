@@ -43,5 +43,24 @@ RSpec.describe "User", type: :request do
 
     end
   end
+  context 'get single user' do
+    it 'get a specific user details' do
+      user = FactoryBot.create(:user)
+      get "/user/#{user.id}", headers: auth_headers
+      
+      data = JSON.parse(response.body)
+      expect(data["data"]["first_name"]).to eq(user.first_name)
+      expect(data["data"]["email"]).to eq(user.email)
+      expect(data["data"]["user_type"]).to eq(user.user_type)
+
+    end
+    it 'should fail to return user' do
+      get "/user/99999", headers: auth_headers
+      data = JSON.parse(response.body)
+
+      expect(data["message"]).to eq("User with Id: 99999 is not found")
+
+    end
+  end
 
 end
