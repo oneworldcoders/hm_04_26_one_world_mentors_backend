@@ -17,6 +17,11 @@ class CoursesController < ApplicationController
     end
   end
 
+  def show
+    course = Course.find_by_id(params['id'])
+    render json: {course: course}
+  end
+
   private
   def course_params
     params.require(:course).permit(:courseCode, :name, :description)
