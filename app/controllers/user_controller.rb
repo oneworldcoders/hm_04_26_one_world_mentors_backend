@@ -20,31 +20,29 @@ class UserController < ApplicationController
   def update_user
     current_user = User.find(params[:id])
     payload = JSON.parse(request.body.read)
-
-    current_user.first_name = payload["first_name"]
-    current_user.email = payload["email"]
-    current_user.user_type = payload["last_name"]
-    current_user.user_type = payload["password"]
-    current_user.user_type = payload["user_type"]
-
-    if current_user.valid?
-      current_user.save
-      render json: current_user, status: 200
-    else
-      render json: current_user.errors.details, status: 500
+    update_detail = custom_compact(payload)
+    begin
+      current_user.update!(update_detail)
+      render json: current_user, status: :ok
+    rescue => exception
+      render json: exception, status: :bad_request
     end
   end
 
   def show
     user = User.find_by(:id => params[:id])
     if user.present?
-      render json: { data: user}, status: :ok
+      render json: { data: user }, status: :ok
     else
       render json: { message: "User with Id: " + params[:id] + " is not found" }, status: :not_found
     end
   end
 
   private
+
+  def custom_compact(payload)
+    payload.reject { |_, value| value.empty? }
+  end
 
   def user_params
     params.require(:user).permit(:first_name, :last_name, :email, :password, :user_type)
