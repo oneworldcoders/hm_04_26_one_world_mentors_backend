@@ -24,14 +24,15 @@ ActiveRecord::Schema.define(version: 2020_05_26_135857) do
   end
 
   create_table "users", force: :cascade do |t|
-    t.string "first_name", null: false
-    t.string "last_name", null: false
+    t.string "first_name"
+    t.string "last_name"
     t.string "email", null: false
-    t.string "password", null: false
+    t.string "password"
     t.string "user_type", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "image_url"
+    t.string "sub"
   end
 
 end
