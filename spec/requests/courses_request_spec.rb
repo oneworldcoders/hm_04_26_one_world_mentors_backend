@@ -19,12 +19,31 @@ RSpec.describe "Courses", type: :request do
         end
 
         it "returns a single course in a list" do
-          course = Course.create(courseCode: "CS001", name: "Computer Science", description: "Fundamentals of bits")
+          Course.create(courseCode: "CS001", name: "Computer Science", description: "Fundamentals of bits")
           get "/courses", headers: headers
           courses = JSON.parse(response.body)
           expect(courses["courses"].first["courseCode"]).to eq("CS001")
           expect(courses["courses"].first["name"]).to eq("Computer Science")
           expect(courses["courses"].first["description"]).to eq("Fundamentals of bits")
         end
+    end
+
+    context "create course" do
+      it "creates a course" do
+        headers = { "ACCEPT" => "application/json" }
+        post "/courses", params: { course: { name: "Javascript", courseCode: "JS101", description: "JS for web development"  } }, headers: headers
+        expect(response.content_type).to eq("application/json; charset=utf-8")
+        expect(response).to have_http_status(:created)
+        courses = JSON.parse(response.body)
+        expect(courses["courseCode"]).to eq("JS101")
+        expect(courses["name"]).to eq("Javascript")
+        expect(courses["description"]).to eq("JS for web development")
+      end
+      it "fails to creates a course" do
+        headers = { "ACCEPT" => "application/json" }
+        post "/courses", params: { course: { namedd: "JJsss" } }, headers: headers
+        expect(response.content_type).to eq("application/json; charset=utf-8")
+        expect(response.body).to include("error")
+      end
     end
 end
