@@ -25,7 +25,6 @@ class UserController < ApplicationController
     current_user.last_name = payload["last_name"] unless payload['last_name']&.empty?
     current_user.user_type = payload["user_type"] unless payload['user_type']&.empty?
 
-    
     if current_user.valid?
       current_user.save
       render json: current_user, status: :ok
