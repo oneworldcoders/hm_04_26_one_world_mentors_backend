@@ -1,13 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe "Courses", type: :request do
-  headers = nil
-  before do
-    User.create(first_name: "Julius", last_name: "Ngwu", email: "julius@gmail.com", password: "julius@1", user_type: "mentee")
-    post "/login", params: { "email" => "julius@gmail.com", "password" => "julius@1" }
-    user_info = JSON.parse(response.body)
-    headers = { "Authorization" => "Bearer " + user_info["token"] }
-  end
+  include Helpers
+  let(:headers){login}
 
   describe "GET /courses" do
     it "returns empty list of courses" do
@@ -30,7 +25,6 @@ RSpec.describe "Courses", type: :request do
 
     context "create course" do
       it "creates a course" do
-        headers = { "ACCEPT" => "application/json" }
         post "/courses", params: { course: { name: "Javascript", courseCode: "JS101", description: "JS for web development"  } }, headers: headers
         expect(response.content_type).to eq("application/json; charset=utf-8")
         expect(response).to have_http_status(:created)

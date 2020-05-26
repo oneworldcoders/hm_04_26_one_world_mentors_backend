@@ -1,15 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe "User", type: :request do
-  headers = nil
-  auth_headers = nil
-  before do
-    User.create(first_name: "Julius", last_name: "Ngwu", email: "julius@gmail.com", password: "julius@1", user_type: "mentee")
-    post "/login", params: { "email" => "julius@gmail.com", "password" => "julius@1" }
-    user_info = JSON.parse(response.body)
-    auth_headers = { "Authorization" => "Bearer " + user_info["token"] }
-  end
-
+  include Helpers
+  let(:auth_headers){login}
+  
   describe "GET /index" do
     it "returns welcome message" do
       get '/'
