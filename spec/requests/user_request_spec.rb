@@ -53,7 +53,6 @@ RSpec.describe "User", type: :request do
 
     it "should fail to update profile when the field is incorrect" do
       patch "/user/profile/#{@user.id}", params: { first_namesss: "Ebuka" }.to_json, headers: auth_headers
-      expect(response.body).to include("error")
       expect(response).to have_http_status(400)
     end
   end
