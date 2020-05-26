@@ -1,0 +1,18 @@
+development:
+  cloud_name: opix
+  api_key: "666248124263884"
+  api_secret: HIFlUIvzWezIfxLwHincG2d6xr8
+  enhance_image_tag: true
+  static_file_support: false
+production:
+  cloud_name: opix
+  api_key: "666248124263884"
+  api_secret: HIFlUIvzWezIfxLwHincG2d6xr8
+  enhance_image_tag: true
+  static_file_support: true
+test:
+  cloud_name: opix
+  api_key: "666248124263884"
+  api_secret: HIFlUIvzWezIfxLwHincG2d6xr8
+  enhance_image_tag: true
+  static_file_support: false
