@@ -1,14 +1,8 @@
 require "rails_helper"
 
 RSpec.describe "Users", type: :request do
-  headers = nil
-  before do
-    User.create(first_name: "Julius", last_name: "Ngwu", email: "julius@gmail.com", password: "julius@1", user_type: "mentee")
-    post "/login", params: { "email" => "julius@gmail.com", "password" => "julius@1" }
-    user_info = JSON.parse(response.body)
-    headers = { "Authorization" => "Bearer " + user_info["token"] }
-  end
-
+  include Helpers
+  let(:headers){login}
   describe "GET /mentors" do
     it "should return error message if token is not present" do
       get "/mentors", headers: {}
@@ -22,7 +16,7 @@ RSpec.describe "Users", type: :request do
     end
 
     it "returns a single mentor in a list" do
-      user = User.create(first_name: "mike", last_name: "tyson", email: "rm@mail.com", password: "yes", user_type: "mentor")
+      User.create(first_name: "mike", last_name: "tyson", email: "rm@mail.com", password: "yes", user_type: "mentor")
       get "/mentors", headers: headers
       expect(response.body).to include("mike")
       mentors = JSON.parse(response.body)

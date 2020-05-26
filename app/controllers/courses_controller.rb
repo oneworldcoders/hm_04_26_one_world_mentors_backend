@@ -1,6 +1,4 @@
 class CoursesController < ApplicationController
-  skip_before_action :authenticate_request, only: [:create,:index]
-
   def index
       courses = Course.all
       render json:{courses: courses}, status: 200
