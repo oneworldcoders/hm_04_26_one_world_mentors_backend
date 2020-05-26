@@ -73,4 +73,28 @@ RSpec.describe "User", type: :request do
       expect(data["message"]).to eq("User with Id: 99999 is not found")
     end
   end
+
+  context "update_profile_picture" do
+    before(:each) do
+      stub_request(:any, /api.cloudinary.com/).to_return(body: { url: "http://res.cloudinary.com/opix/image/upload/v1590572920/test.png" }.to_json)
+      @new_user = FactoryBot.create(:user)
+    end
+
+    let(:file) {
+      Rack::Test::UploadedFile.new(Rails.root.join("spec",
+                                                   "fixtures", "test.png"), "image/jpg")
+    }
+    it "adds an image_url value to the field in the database" do
+      expect(@new_user.image_url).to be nil
+      patch "/user/profile_picture/#{@new_user.id}", params: { image_url: file }, headers: auth_headers
+      user = User.find(@new_user.id)
+      expect(user.image_url).to be_truthy
+    end
+
+    it "updates profile image and returns the stubbed url" do
+      patch "/user/profile_picture/#{@new_user.id}", params: { image_url: file }, headers: auth_headers
+
+      expect(response.body).to eq({ url: "http://res.cloudinary.com/opix/image/upload/v1590572920/test.png" }.to_json)
+    end
+  end
 end

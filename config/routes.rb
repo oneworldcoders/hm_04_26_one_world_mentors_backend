@@ -6,6 +6,7 @@ Rails.application.routes.draw do
   post "signup", to: "user#signup"
   get "user/:id", to: "user#show"
   patch "user/profile/:id", to: "user#update_user"
+  patch "user/profile_picture/:id", to: "user#update_profile_image"
   get "mentors", to: "mentors#mentors"
   get "mentees", to: "mentees#index"
   post "login" => "auth#create"

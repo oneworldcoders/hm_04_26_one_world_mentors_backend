@@ -36,6 +36,8 @@ group :development, :test do
   gem 'faker'
   gem 'factory_bot_rails'
   gem 'database_cleaner'
+  gem 'webmock'
+  gem 'dotenv-rails'
 end
 
 group :development do
