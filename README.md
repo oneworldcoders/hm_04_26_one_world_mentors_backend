@@ -7,11 +7,19 @@ application up and running.
 
 Things you may want to cover:
 
-* Ruby version
+- Ruby version
 
-* System dependencies
+- System dependencies
 
-* Configuration
+- Configuration
+
+## Add the following in the your .env file
+
+```text
+CLOUD_NAME="cloud_name"
+CLOUD_API_KEY="api_key"
+CLOUD_API_SECRET="api_secret"
+```
 
 * Database creation
 
@@ -24,3 +32,4 @@ Things you may want to cover:
 * Deployment instructions
 
 * ...
+```

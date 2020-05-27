@@ -21,12 +21,8 @@ class UserController < ApplicationController
     current_user = User.find(params[:id])
     payload = JSON.parse(request.body.read)
     update_detail = custom_compact(payload)
-    begin
-      current_user.update!(update_detail)
-      render json: current_user, status: :ok
-    rescue => exception
-      render json: exception, status: :bad_request
-    end
+    current_user.update!(update_detail)
+    render json: current_user, status: :ok
   end
 
   def show
@@ -38,6 +34,14 @@ class UserController < ApplicationController
     end
   end
 
+  def update_profile_image
+    current_user = User.find_by(:id => params[:id])
+    upload_image = Cloudinary::Uploader.upload(params["image_url"], :width=>300, :height=>300, :crop=>"scale")
+    user = { image_url: upload_image["url"] }
+    current_user.update!(user)
+    render json: { url: upload_image["url"] }, status: :ok
+  end
+
   private
 
   def custom_compact(payload)
@@ -47,4 +51,5 @@ class UserController < ApplicationController
   def user_params
     params.require(:user).permit(:first_name, :last_name, :email, :password, :user_type)
   end
+
 end
