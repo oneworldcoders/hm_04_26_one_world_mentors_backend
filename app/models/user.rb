@@ -1,8 +1,5 @@
 class User < ApplicationRecord
-  validates :first_name, presence: true
-  validates :last_name, presence: true
   validates :email, presence: true
-  validates :password, presence: true
   validates :user_type, presence: true
 
   def self.authenticate(email, password)
@@ -11,5 +8,16 @@ class User < ApplicationRecord
       return user
     end
     nil
+  end
+
+  def self.find_or_create(auth)
+    find_or_create_by(sub: auth["sub"]) do |user|
+      user.sub = auth["sub"]
+      user.first_name ||= auth["given_name"]
+      user.last_name ||= auth["family_name"]
+      user.email = auth["email"]
+      user.user_type = "mentee"
+      user.save!
+    end
   end
 end
