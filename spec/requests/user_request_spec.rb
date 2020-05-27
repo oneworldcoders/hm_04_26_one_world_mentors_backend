@@ -20,7 +20,7 @@ RSpec.describe "User", type: :request do
     end
     it "fails to creates a user" do
       headers = { "ACCEPT" => "application/json" }
-      post "/signup", params: { user: { firkst_name: "Julius", last_name: "Ngwu", email: "julius@1", password: "julius@@1", user_type: "mentee" } }, headers: headers
+      post "/signup", params: { user: { first_name: "Julius", last_name: "Ngwu", email: "", password: "julius@@1", user_type: "mentee" } }, headers: headers
       expect(response.content_type).to eq("application/json; charset=utf-8")
       expect(response.body).to include("error")
     end
@@ -41,14 +41,12 @@ RSpec.describe "User", type: :request do
       expect(updated_user["user_type"]).to eq("mentor")
     end
 
-    it "should retain the old user profile when empty field is passed" do
+    it "should return error messages when updating with empty fields" do
       patch "/user/profile/#{@user.id}", params: { first_name: "", last_name: "", email: "", user_type: "mentor" }.to_json, headers: auth_headers
 
       updated_user = JSON.parse(response.body)
-      expect(updated_user["first_name"]).to eq(@user.first_name)
-      expect(updated_user["last_name"]).to eq(@user.last_name)
-      expect(updated_user["email"]).to eq(@user.email)
-      expect(updated_user["user_type"]).to eq("mentor")
+      expect(updated_user["errors"][0]["FirstName"]).to eq("Cannot be empty")
+      expect(updated_user["errors"][1]["LastName"]).to eq("Cannot be empty")
     end
 
     it "should fail to update profile when the field is incorrect" do

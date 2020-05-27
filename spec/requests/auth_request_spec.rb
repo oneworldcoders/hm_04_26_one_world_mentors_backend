@@ -5,7 +5,7 @@ RSpec.describe "Auths", type: :request do
   user = nil
   data = nil
   before do
-    data = { "email" => "julius@gmail.com", "password" => "julius@1" }
+    data = {"email" => "julius@gmail.com", "password" => "julius@1" }
     user = User.create(first_name: "Julius", last_name: "Ngwu", email: "julius@gmail.com", password: "julius@1", user_type: "mentee")
   end
 

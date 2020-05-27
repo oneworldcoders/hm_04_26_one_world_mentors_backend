@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_26_135857) do
+ActiveRecord::Schema.define(version: 2020_05_27_095902) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -23,14 +23,19 @@ ActiveRecord::Schema.define(version: 2020_05_26_135857) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  create_table "jwt_blacklists", force: :cascade do |t|
+    t.string "token", null: false
+  end
+
   create_table "users", force: :cascade do |t|
-    t.string "first_name", null: false
-    t.string "last_name", null: false
+    t.string "first_name"
+    t.string "last_name"
     t.string "email", null: false
-    t.string "password", null: false
+    t.string "password_digest"
     t.string "user_type", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "sub"
     t.string "image_url"
   end
 

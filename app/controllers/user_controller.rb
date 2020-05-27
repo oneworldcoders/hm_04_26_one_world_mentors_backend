@@ -6,12 +6,17 @@ class UserController < ApplicationController
   end
 
   def signup
+    error_messages = Validation.sign_up_validate(user_params)
+    if !error_messages.empty?
+      render json: { "errors": error_messages }, status: 400
+      return
+    end
     @new_user = User.new(user_params)
 
     if @new_user.valid?
       @new_user.save
-
-      render json: @new_user, status: 201
+      user = { email: @new_user.email, id: @new_user.id, first_name: @new_user.first_name, last_name: @new_user.last_name, user_type: @new_user.user_type }
+      render json: user, status: 201
     else
       render json: @new_user.errors.details, status: 500
     end
@@ -20,9 +25,15 @@ class UserController < ApplicationController
   def update_user
     current_user = User.find(params[:id])
     payload = JSON.parse(request.body.read)
+    error_messages = Validation.update_user_validate(payload)
+    if !error_messages.empty?
+      render json: { "errors": error_messages }, status: 400
+      return
+    end
     update_detail = custom_compact(payload)
     begin
       current_user.update!(update_detail)
+
       render json: current_user, status: :ok
     rescue => exception
       render json: exception, status: :bad_request

@@ -1,13 +1,11 @@
 class User < ApplicationRecord
-  validates :first_name, presence: true
-  validates :last_name, presence: true
+  has_secure_password
   validates :email, presence: true
-  validates :password, presence: true
   validates :user_type, presence: true
 
   def self.authenticate(email, password)
     user = find_by_email(email)
-    if user && user.password == password
+    if user && user.authenticate(password)
       return user
     end
     nil

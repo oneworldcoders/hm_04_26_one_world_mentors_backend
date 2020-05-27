@@ -13,6 +13,8 @@ gem 'rack-cors'
 # Use Puma as the app server
 gem 'puma', '~> 4.1'
 gem 'cloudinary'
+gem 'bcrypt'
+gem 'activesupport'
 
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 # gem 'jbuilder', '~> 2.7'
