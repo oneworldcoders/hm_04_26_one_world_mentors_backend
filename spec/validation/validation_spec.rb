@@ -3,10 +3,10 @@ require "./lib/validation"
 RSpec.describe Validation do
   context "validate_blank" do
     it "should return error message if attribute is nil" do
-      expect(Validation.validate_blank("", "name")).to eql(:name => "Cannot be empty")
+      expect(Validation.validate_blank({"name"=>""})).to eql([:Name => "Cannot be empty"])
     end
     it "should return nil if attribute isnot nil" do
-      expect(Validation.validate_blank("not nil", "name")).to eql(nil)
+      expect(Validation.validate_blank({"name"=>"not nil"})).to eql([])
     end
   end
 
@@ -21,11 +21,11 @@ RSpec.describe Validation do
 
   context "sign_up_validate" do
     missing_user_attribute_values = {
-      "first_name": "",
-      "last_name": "",
-      "email": "ken1@gmail.com",
-      "password": "",
-      "user_type": "mentor",
+      "first_name"=> "",
+      "last_name"=> "",
+      "email"=> "ken1@gmail.com",
+      "password"=> "",
+      "user_type"=> "mentor",
     }
     user_attribute = {
       "first_name" => "firstname",
@@ -35,19 +35,19 @@ RSpec.describe Validation do
       "password" => "password123",
     }
     it "should return error message if attributes are invalid" do
-      expect(Validation.sign_up_validate(missing_user_attribute_values)).not_to be_empty
+      expect{Validation.sign_up_validate(missing_user_attribute_values)}.to raise_error(ValidationError)
     end
     it "should return nil if attribute length is greater than specified" do
-      expect(Validation.sign_up_validate(user_attribute)).to be_empty
+      expect(Validation.sign_up_validate(user_attribute)).to eql(nil)
     end
   end
 
   context "update_user_validate" do
     missing_user_attribute_values = {
-      "first_name": "",
-      "last_name": "",
-      "email": "ken1@gmail.com",
-      "user_type": "mentor",
+      "first_name"=> "",
+      "last_name"=> "",
+      "email"=> "ken1@gmail.com",
+      "user_type"=> "mentor",
     }
     user_attribute = {
       "first_name" => "firstname",
@@ -56,10 +56,10 @@ RSpec.describe Validation do
       "user_type" => "mentor",
     }
     it "should return error message if attributes are invalid" do
-      expect(Validation.update_user_validate(missing_user_attribute_values)).not_to be_empty
+      expect{Validation.update_user_validate(missing_user_attribute_values)}.to raise_error(ValidationError)
     end
     it "should return nil if attribute length is greater than specified" do
-      expect(Validation.update_user_validate(user_attribute)).to be_empty
+      expect(Validation.update_user_validate(user_attribute)).to eql(nil)
     end
   end
 end

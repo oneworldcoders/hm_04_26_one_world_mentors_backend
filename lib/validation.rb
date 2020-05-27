@@ -1,17 +1,20 @@
+require "active_support/core_ext/string/inflections"
 require "active_support/core_ext"
+require "./lib/validation_error"
+
 
 class Validation
   class << self
-    def validate_blank(attribute, name)
-      if attribute.blank?
-        return { "#{name}": "Cannot be empty" }
-      end
-      nil
+    def validate_blank(payload)
+        messages=[]
+        payload.each do |key, value|
+            if value.blank?
+                messages << { "#{key.camelize}": "Cannot be empty" }
+            end
+        end
+        return messages
     end
 
-    def validate_password(password)
-      self.validate_blank(password, "password") || self.validate_length(password, 8, "password")
-    end
 
     def validate_length(attribute, length, name)
       if attribute.size < length
@@ -21,20 +24,13 @@ class Validation
     end
 
     def sign_up_validate(payload)
-      [
-        self.validate_blank(payload["first_name"], "FirstName"),
-        self.validate_blank(payload["user_type"], "UserType"),
-        self.validate_blank(payload["last_name"], "LastName"),
-        self.validate_password(payload["password"]),
-      ].compact
+      errors=[ self.validate_blank(payload),self.validate_length(payload["password"],8,"password")].compact.flatten
+      raise ValidationError.new(errors) unless errors.empty?
     end
 
     def update_user_validate(payload)
-      [
-        self.validate_blank(payload["first_name"], "FirstName"),
-        self.validate_blank(payload["user_type"], "UserType"),
-        self.validate_blank(payload["last_name"], "LastName"),
-      ].compact
+      errors=[self.validate_blank(payload)].flatten
+      raise ValidationError.new(errors) unless errors.empty?
     end
   end
 end
