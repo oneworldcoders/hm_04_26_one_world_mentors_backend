@@ -1,5 +1,6 @@
 class UserController < ApplicationController
   skip_before_action :authenticate_request, only: [:index, :signup]
+  rescue_from ActiveModel::UnknownAttributeError, with: :render_bad_request
 
   def index
     render json: { message: "Welcome to One world Mentors" }, status: 200
@@ -21,12 +22,8 @@ class UserController < ApplicationController
     current_user = User.find(params[:id])
     payload = JSON.parse(request.body.read)
     update_detail = custom_compact(payload)
-    begin
-      current_user.update!(update_detail)
-      render json: current_user, status: :ok
-    rescue => exception
-      render json: exception, status: :bad_request
-    end
+    current_user.update!(update_detail)
+    render json: current_user, status: :ok
   end
 
   def show
@@ -42,12 +39,8 @@ class UserController < ApplicationController
     current_user = User.find_by(:id => params[:id])
     upload_image = Cloudinary::Uploader.upload(params["image_url"])
     user = { image_url: upload_image["url"] }
-    begin
-      current_user.update!(user)
-      render json: { url: upload_image["url"] }, status: :ok
-    rescue => exception
-      render json: exception, status: :bad_request
-    end
+    current_user.update!(user)
+    render json: { url: upload_image["url"] }, status: :ok
   end
 
   private
@@ -58,5 +51,9 @@ class UserController < ApplicationController
 
   def user_params
     params.require(:user).permit(:first_name, :last_name, :email, :password, :user_type)
+  end
+
+  def render_bad_request(exception)
+    render json: exception, status: :bad_request
   end
 end
