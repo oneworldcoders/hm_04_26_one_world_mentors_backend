@@ -12,5 +12,6 @@ Rails.application.routes.draw do
   patch "mentees/:id", to: "mentees#add_course"
   post "login" => "auth#create"
   get "profile", to: "profile#show"
+  get "mentees/:id" => "mentees#fetch_mentee_record"
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 end
