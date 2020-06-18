@@ -11,10 +11,10 @@ class MenteesController < ApplicationController
   end
 
   def add_course
+    course_id = params[:course_id]
     current_mentee = Mentee.find(params[:id])
-    current_mentee.update!(course_id: params[:course_id])
+    current_mentee.update!(course_id: course_id)
+    AssignMentor.assign(current_mentee, course_id)
     render json: current_mentee, status: :ok
   end
-
-
 end

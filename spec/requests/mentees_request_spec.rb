@@ -25,13 +25,26 @@ RSpec.describe "Mentees", type: :request do
       end
     end
     context "add course" do
+      let(:user) { FactoryBot.create(:user) }
+      let(:user1) { FactoryBot.create(:user) }
+      let(:course) { course = FactoryBot.create(:course) }
+
+      before do
+        @mentor = Mentor.create(user:user1, available:true)
+        @new_mentee = Mentee.create(id:1, user:user)
+      end
+      
       it "should add a course to a mentee" do
-        user = FactoryBot.create(:user)
-        course = FactoryBot.create(:course)
-        new_mentee = Mentee.create(id:1, user:user)
-        patch "/mentees/#{new_mentee.id}", params: { course_id: course.id }, headers: headers
+        patch "/mentees/#{@new_mentee.id}", params: { course_id: course.id }, headers: headers
         mentees = JSON.parse(response.body)
         expect(mentees["course_id"]).to eq(course.id)
+      end
+
+      it 'assign mentor should add mentor to mentee table' do
+        mentor_course = MentorCourse.create(mentor:@mentor, course:course)
+        AssignMentor.assign(@new_mentee, course.id)
+
+        expect(@new_mentee.mentor_id).to eq(@mentor.id)
       end
     end
   end
