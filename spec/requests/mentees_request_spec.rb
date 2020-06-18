@@ -24,5 +24,15 @@ RSpec.describe "Mentees", type: :request do
         expect(mentees["message"]).to eq("No mentee recorded")
       end
     end
+    context "add course" do
+      it "should add a course to a mentee" do
+        user = FactoryBot.create(:user)
+        course = FactoryBot.create(:course)
+        new_mentee = Mentee.create(id:1, user:user)
+        patch "/mentees/#{new_mentee.id}", params: { course_id: course.id }, headers: headers
+        mentees = JSON.parse(response.body)
+        expect(mentees["course_id"]).to eq(course.id)
+      end
+    end
   end
 end
