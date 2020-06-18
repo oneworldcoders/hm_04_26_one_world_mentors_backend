@@ -1,5 +1,7 @@
 class User < ApplicationRecord
-  TEST_PASSWORD = "mentorspassword1234"
+  before_create do
+    self.password = BCrypt::Password.create(password) if password
+  end
 
   validates :first_name, presence: true
   validates :last_name, presence: true

@@ -4,7 +4,7 @@ RSpec.describe User, type: :model do
   # pending "add some examples to (or delete) #{__FILE__}"
   user  =nil
   before do
-    user= User.create(first_name: 'Julius', last_name: 'Ngwu', email:'julius@gmail.com',password:BCrypt::Password.create('julius@1'), user_type:'mentee')
+    user= User.create(first_name: 'Julius', last_name: 'Ngwu', email:'julius@gmail.com',password:Helpers::TEST_PASSWORD, user_type:'mentee')
   end
 
   it { should belong_to(:course).optional(true) }
@@ -13,7 +13,7 @@ RSpec.describe User, type: :model do
     expect(user).to be_valid
   end
   it"The authenticate method should return  valid user if credentials are valid" do
-  auth_user=User.authenticate(user["email"],'julius@1')
+  auth_user=User.authenticate(user["email"],Helpers::TEST_PASSWORD)
   expect(auth_user["email"]).to eq(user["email"])
 end
 it"The authenticate method should returna nil if credentials are not valid" do

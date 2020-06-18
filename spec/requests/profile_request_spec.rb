@@ -8,7 +8,7 @@ describe 'User', type: :request do
     user_without_id = JSON.parse(user.to_json).except("id")
     User.create(user_without_id)
 
-    post "/login", params: {email:user["email"],password:User::TEST_PASSWORD}
+    post "/login", params: {email:user["email"],password:Helpers::TEST_PASSWORD}
     user_info = JSON.parse(response.body)
     headers = { "Authorization" => "Bearer " + user_info["token"] }
   end
