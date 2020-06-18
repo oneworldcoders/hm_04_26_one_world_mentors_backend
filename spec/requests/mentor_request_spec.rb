@@ -23,7 +23,6 @@ RSpec.describe "Users", type: :request do
       expect(mentors["mentors"].first["first_name"]).to eq("mike")
       expect(mentors["mentors"].first["last_name"]).to eq("tyson")
       expect(mentors["mentors"].first["email"]).to eq("rm@mail.com")
-      expect(mentors["mentors"].first["password"]).to eq("yes")
       expect(mentors["mentors"].first["user_type"]).to eq("mentor")
     end
   end

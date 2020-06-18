@@ -20,6 +20,13 @@ RSpec.describe "User", type: :request do
       expect(response.content_type).to eq("application/json; charset=utf-8")
       expect(response).to have_http_status(:created)
     end
+    it "encrypts passwords on sign up"do
+      headers = { "ACCEPT" => "application/json" }
+      password = "julius@@34"
+      post "/signup", params: { user: { first_name: "Julius", last_name: "Ngwu", email: "julius@1", password: password, user_type: "mentee" } }, headers: headers
+      expect(User.first.password).to_not eq(password)
+
+    end
     it "fails to creates a user" do
       headers = { "ACCEPT" => "application/json" }
       post "/signup", params: { user: { firkst_name: "Julius", last_name: "Ngwu", email: "julius@1", password: "julius@@1", user_type: "mentee" } }, headers: headers

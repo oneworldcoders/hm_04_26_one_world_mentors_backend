@@ -9,8 +9,9 @@ class UserController < ApplicationController
     @new_user = User.new(user_params)
 
     if @new_user.valid?
-        @new_user.save
-        render json: @new_user, status: 201
+      @new_user.save
+
+      render json: @new_user, status: 201
     else
       render json: @new_user.errors.details, status: 500
     end
@@ -49,6 +50,11 @@ class UserController < ApplicationController
 
   def user_params
     params.require(:user).permit(:first_name, :last_name, :email, :password, :user_type)
+  end
+
+  def encrypt_password(password)
+    encrypted_password = BCrypt::Password.create(password)
+    @new_user.password = encrypted_password
   end
 
 end
