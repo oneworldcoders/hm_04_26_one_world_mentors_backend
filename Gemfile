@@ -38,6 +38,7 @@ group :development, :test do
   gem 'database_cleaner'
   gem 'webmock'
   gem 'dotenv-rails'
+  gem 'shoulda-matchers', '~> 4.0'
 end
 
 group :development do
