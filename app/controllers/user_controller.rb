@@ -11,7 +11,7 @@ class UserController < ApplicationController
     if @new_user.valid?
       @new_user.save
 
-      render json: @new_user, status: 201
+      render json: @new_user.as_json(except: [:password]), status: 201
     else
       render json: @new_user.errors.details, status: 500
     end

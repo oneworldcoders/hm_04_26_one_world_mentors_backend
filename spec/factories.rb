@@ -12,4 +12,18 @@ FactoryBot.define do
     name { Faker::Lorem.word }
     description { Faker::Lorem.sentence }
   end
+
+  factory :mentor do
+    user
+    availabe { Faker::Boolean.boolean }
+  end
+
+  factory :mentee do
+    user
+  end
+
+  factory :mentor_course do
+    course
+    mentor
+  end
 end
