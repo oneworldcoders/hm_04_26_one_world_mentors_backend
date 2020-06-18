@@ -6,4 +6,5 @@ class Course < ApplicationRecord
   has_many :users
   has_many :mentor_courses
   has_many :mentors, through: :mentor_courses
+  has_many :mentees
 end
