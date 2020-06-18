@@ -7,9 +7,9 @@ FactoryBot.define do
         user_type { Faker::Name.name }
     end
 
-    factory :course, class: Course do
-        courseCode { Faker::Code.asin }
-        name { Faker::Lorem.word }
-        description { Faker::Lorem.sentence }
-    end
+  factory :course, class: Course do
+    courseCode { Faker::Code.asin }
+    name { Faker::Lorem.word }
+    description { Faker::Lorem.sentence }
+  end
 end

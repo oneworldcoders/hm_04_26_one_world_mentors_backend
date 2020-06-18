@@ -10,6 +10,7 @@ class User < ApplicationRecord
   validates :user_type, presence: true
 
   belongs_to :course, optional: true
+  has_many :mentees
 
   def self.authenticate(email, password)
     user = find_by_email(email)
