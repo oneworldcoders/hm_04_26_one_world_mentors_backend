@@ -20,7 +20,10 @@ class MenteesController < ApplicationController
   def fetch_mentee_record
     current_mentee = Mentee.find_by(:id => params[:id])
     if current_mentee.present?
-      render json: { message: "Mentee Record fetched succesfully", "Mentee": current_mentee.user, "Mentor": current_mentee.mentor.user, "Course": current_mentee.course }, status: 200
+      render json: { message: "Mentee Record fetched succesfully", 
+                     mentee: current_mentee.user, 
+                     mentor: current_mentee.mentor.user, 
+                     course: current_mentee.course }, status: 200
     else
       render json: { message: "Mentee Record Not Found" } , status: 400
     end
