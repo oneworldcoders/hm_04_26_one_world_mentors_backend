@@ -7,8 +7,6 @@ RSpec.describe User, type: :model do
     user= User.create(first_name: 'Julius', last_name: 'Ngwu', email:'julius@gmail.com',password:Helpers::TEST_PASSWORD, user_type:'mentee')
   end
 
-  it { should belong_to(:course).optional(true) }
-
   it 'is valid when all attributes are provided' do
     expect(user).to be_valid
   end

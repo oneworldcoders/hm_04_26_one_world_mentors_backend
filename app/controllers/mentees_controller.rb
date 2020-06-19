@@ -16,4 +16,16 @@ class MenteesController < ApplicationController
     Assign.mentor(current_mentee, course_id)
     render json: current_mentee, status: :ok
   end
+
+  def fetch_mentee_record
+    current_mentee = Mentee.find_by(:id => params[:id])
+    if current_mentee.present?
+      render json: { message: "Mentee Record fetched succesfully", 
+                     mentee: current_mentee.user, 
+                     mentor: current_mentee.mentor.user, 
+                     course: current_mentee.course }, status: 200
+    else
+      render json: { message: "Mentee Record Not Found" } , status: 400
+    end
+  end
 end
