@@ -3,7 +3,7 @@ class PasswordsController < ApplicationController
 
   def forgot
     if params[:email].blank?
-      return render json: { error: "Email not present" }
+      return render json: { error: "Email not present" }, status: :bad_request
     end
 
     user = User.find_by(:email => params[:email])
