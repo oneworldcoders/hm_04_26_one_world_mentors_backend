@@ -45,41 +45,6 @@ RSpec.describe "Mentees", type: :request do
       before do
         @mentor = Mentor.create(id:1, user:user)
         @new_mentee = Mentee.create(id:1, user:user1, course:course, mentor:@mentor)
-      end
-      
-      it "should return a mentee" do
-        get "/mentees/#{@new_mentee.id}", headers: headers
-        mentees = JSON.parse(response.body)
-        expect(mentees['mentee']['id']).to eq(@new_mentee.user.id)
-      end
-
-      it "should return a mentor record" do
-        get "/mentees/#{@new_mentee.id}", headers: headers
-        mentees = JSON.parse(response.body)
-        expect(mentees['mentor']['id']).to eq(@new_mentee.mentor.user.id)
-      end
-
-      it "should return a course record" do
-        get "/mentees/#{@new_mentee.id}", headers: headers
-        mentees = JSON.parse(response.body)
-        expect(mentees['course']['id']).to eq(@new_mentee.course.id)
-      end
-
-      it "should return a bad request" do
-        get "/mentees/test", headers: headers
-        expect(response).to have_http_status 400
-        expect(response.body).to eq ({ message: "Mentee Record Not Found" }.to_json)
-      end
-    end
-
-    context "fetches mentee" do
-      let(:user) { FactoryBot.create(:user) }
-      let(:user1) { FactoryBot.create(:user) }
-      let(:course) { course = FactoryBot.create(:course) }
-
-      before do
-        @mentor = Mentor.create(id:1, user:user)
-        @new_mentee = Mentee.create(id:1, user:user1, course:course, mentor:@mentor)
         get "/mentees/#{@new_mentee.id}", headers: headers
         @mentees = JSON.parse(response.body)
       end
