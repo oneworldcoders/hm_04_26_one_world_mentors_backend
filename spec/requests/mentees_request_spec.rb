@@ -101,13 +101,6 @@ RSpec.describe "Mentees", type: :request do
         expect(response).to have_http_status 400
         expect(response.body).to eq ({ message: "Mentee Record Not Found" }.to_json)
       end
-
-      xit 'assign mentor should add mentor to mentee table' do
-        mentor_course = MentorCourse.create(mentor:@mentor, course:course)
-        AssignMentor.assign(@new_mentee, course.id)
-
-        expect(@new_mentee.mentor_id).to eq(@mentor.id)
-      end
     end
   end
 end
