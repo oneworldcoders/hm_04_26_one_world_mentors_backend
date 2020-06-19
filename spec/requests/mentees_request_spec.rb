@@ -52,7 +52,6 @@ RSpec.describe "Mentees", type: :request do
         mentees = JSON.parse(response.body)
         expect(mentees['mentee']['id']).to eq(@new_mentee.user.id)
       end
-    end
 
       it "should return a mentor record" do
         get "/mentees/#{@new_mentee.id}", headers: headers
