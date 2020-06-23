@@ -13,5 +13,8 @@ Rails.application.routes.draw do
   post "login" => "auth#create"
   get "profile", to: "profile#show"
   get "mentees/:id" => "mentees#fetch_mentee_record"
+
+  post "password/forgot", to: "passwords#forgot"
+  post "password/reset", to: "passwords#reset"
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 end
