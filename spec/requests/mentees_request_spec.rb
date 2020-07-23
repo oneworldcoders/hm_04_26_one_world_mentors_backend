@@ -29,9 +29,9 @@ RSpec.describe "Mentees", type: :request do
         user = FactoryBot.create(:user)
         user1 = FactoryBot.create(:user)
         course = FactoryBot.create(:course)
-        new_mentee = Mentee.create(id:1, user:user)
+        new_mentee = Mentee.create(user_id:headers['id'])
         Mentor.create(user:user1, available:true)
-        patch "/mentees/#{new_mentee.id}", params: { course_id: course.id }, headers: headers
+        patch "/mentees", params: { course_id: course.id }, headers: headers
         mentees = JSON.parse(response.body)
         expect(mentees["course_id"]).to eq(course.id)
       end
@@ -45,16 +45,17 @@ RSpec.describe "Mentees", type: :request do
       before do
         @mentor = Mentor.create(id:1, user:user)
         @new_mentee = Mentee.create(id:1, user:user1, course:course, mentor:@mentor)
-        get "/mentees/#{@new_mentee.id}", headers: headers
+        get "/mentees/#{@new_mentee.user_id}", headers: headers
         @mentees = JSON.parse(response.body)
       end
       
       it "should retuen a mentee" do
-        expect(@mentees['mentee']['id']).to eq(@new_mentee.user.id)
+
+        expect(@mentees['mentee']['user_id']).to eq(@new_mentee.user.id)
       end
 
       it "should return a meentor record" do
-        expect(@mentees['mentor']['id']).to eq(@new_mentee.mentor.user.id)
+        expect(@mentees['mentor']['user_id']).to eq(@new_mentee.mentor.user.id)
       end
 
       it "should return a course record" do

@@ -9,7 +9,7 @@ Rails.application.routes.draw do
   patch "user/profile_picture/:id", to: "user#update_profile_image"
   get "mentors", to: "mentors#mentors"
   get "mentees", to: "mentees#index"
-  patch "mentees/:id", to: "mentees#add_course"
+  patch "mentees/", to: "mentees#add_course"
   post "login" => "auth#create"
   get "profile", to: "profile#show"
   get "mentees/:id" => "mentees#fetch_mentee_record"

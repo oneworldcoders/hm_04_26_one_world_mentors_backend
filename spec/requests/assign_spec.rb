@@ -17,7 +17,7 @@ RSpec.describe Assign do
 
   it "should create a course to a mentee relation" do
     mentee = Mentee.create(id:1, user:user)
-    updated_mentee = Assign.course(mentee.id, course.id)
+    updated_mentee = Assign.course(mentee.user_id, course.id)
     expect(updated_mentee.course_id).to eq(course.id)
   end
 end

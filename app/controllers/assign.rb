@@ -9,7 +9,7 @@ class Assign
   end
 
   def self.course(mentee_id, course_id)
-    current_mentee = Mentee.find(mentee_id)
+    current_mentee = Mentee.find_by(:user_id => mentee_id)
     current_mentee.update!(course_id: course_id)
     current_mentee
   end
