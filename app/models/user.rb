@@ -3,6 +3,11 @@ class User < ApplicationRecord
     self.password = BCrypt::Password.create(password) if password
   end
 
+  after_create do
+    Mentee.create(user_id: self.id) if self.user_type == 'mentee'
+    Mentor.create(user_id: self.id) if self.user_type == 'mentor'
+  end
+
   validates :first_name, presence: true
   validates :last_name, presence: true
   validates :email, presence: true, :uniqueness => true
