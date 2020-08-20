@@ -1,10 +1,14 @@
 class CoursesController < ApplicationController
+
   def index
       courses = Course.all
       render json:{courses: courses}, status: 200
   end
 
   def create
+    if @current_user["user_type"] != "admin"
+      return render json: { message: "Permission Denied " }, status: :unauthorized
+    end
     new_course = Course.new(course_params)
     if new_course.valid?
       new_course.save
