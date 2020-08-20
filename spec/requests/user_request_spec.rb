@@ -114,18 +114,16 @@ RSpec.describe "User", type: :request do
   context "create_admin" do
     it "creates a new admin" do
       admin = FactoryBot.create(:admin)
-      # headers = { "ACCEPT" => "application/json" }
       post "/create_admin/#{admin.id}", params: { user: { first_name: "Julius", last_name: "Ngwu", email: "julius@1", password: "julius@@1", user_type: "admin" } }, headers: headers
-
-      p response.body, "ghghghghghhghghhghgh"
       expect(response.content_type).to eq("application/json; charset=utf-8")
       expect(response).to have_http_status(:created)
     end
 
-    xit "fails to signup if user already exist" do
-      old_user = FactoryBot.create(:user)
-      user.email = old_user.email
-      user.should_not be_valid
+    it "fails to create a user if the opreation is not initiated by an admin" do
+      user = FactoryBot.create(:user)
+      post "/create_admin/#{user.id}", params: { user: { first_name: "Julius", last_name: "Ngwu", email: "julius@1", password: "julius@@1", user_type: "admin" } }, headers: headers
+      expect(response.content_type).to eq("application/json; charset=utf-8")
+      expect(response).to have_http_status(:unauthorized)
     end
   end
 end
