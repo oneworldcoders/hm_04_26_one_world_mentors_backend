@@ -21,7 +21,7 @@ class CoursesController < ApplicationController
 
   def show
     course = Course.find_by_id(params['id'])
-    render json: {course: course}
+    render json: {course: course, subtracks: course&.subtracks}
   end
 
   private

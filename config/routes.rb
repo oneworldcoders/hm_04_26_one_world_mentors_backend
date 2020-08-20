@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   resources :courses
+  resources :subtracks
 
   root "user#index"
   get "user/index"
