@@ -16,5 +16,7 @@ Rails.application.routes.draw do
 
   post "password/forgot", to: "passwords#forgot"
   post "password/reset", to: "passwords#reset"
+  post "create_admin/:id", to: "user#create_admin"
+
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 end
