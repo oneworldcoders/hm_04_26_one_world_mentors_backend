@@ -26,4 +26,10 @@ FactoryBot.define do
     course
     mentor
   end
+
+  factory :subtrack do
+    name { Faker::Lorem.word }
+    description { Faker::Lorem.sentence }
+    course
+  end
 end
