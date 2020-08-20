@@ -36,10 +36,24 @@ class UserController < ApplicationController
 
   def update_profile_image
     current_user = User.find_by(:id => params[:id])
-    upload_image = Cloudinary::Uploader.upload(params["image_url"], :width=>300, :height=>300, :crop=>"scale")
+    upload_image = Cloudinary::Uploader.upload(params["image_url"], :width => 300, :height => 300, :crop => "scale")
     user = { image_url: upload_image["url"] }
     current_user.update!(user)
     render json: { url: upload_image["url"] }, status: :ok
+  end
+
+  def create_admin
+    user = User.find_by(:id => params[:id])
+    if user.user_type != "admin"
+      return render json: { message: "Permission Denied " }, status: :unauthorized
+    end
+    @new_user = User.new(user_params)
+    @new_user.user_type = "admin"
+    if @new_user.valid?
+      @new_user.save
+
+      render json: @new_user.as_json(except: [:password]), status: 201
+    end
   end
 
   private
@@ -56,5 +70,4 @@ class UserController < ApplicationController
     encrypted_password = BCrypt::Password.create(password)
     @new_user.password = encrypted_password
   end
-
 end

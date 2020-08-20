@@ -10,6 +10,10 @@ class AuthController < ApplicationController
     end
   end
 
+  def is_admin?
+    current_user.role.label == "admin"
+  end
+
   private
 
   def login_params
