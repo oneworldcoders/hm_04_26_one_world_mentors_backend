@@ -70,10 +70,4 @@ class UserController < ApplicationController
     encrypted_password = BCrypt::Password.create(password)
     @new_user.password = encrypted_password
   end
-<<<<<<< HEAD
-
-
-
-=======
->>>>>>> 644a0e461f721e5d29ba0b573c15a32cf08ead0e
 end
