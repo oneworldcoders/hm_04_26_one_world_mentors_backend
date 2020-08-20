@@ -41,9 +41,6 @@ class User < ApplicationRecord
     save!
   end
 
-  # def user_type
-  #   return :admin if (self.user_type == "admin")
-  # end
 
   private
 

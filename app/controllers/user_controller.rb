@@ -43,8 +43,7 @@ class UserController < ApplicationController
   end
 
   def create_admin
-    user = User.find_by(:id => params[:id])
-    if user.user_type != "admin"
+    if @current_user["user_type"] != "admin"
       return render json: { message: "Permission Denied " }, status: :unauthorized
     end
     @new_user = User.new(user_params)

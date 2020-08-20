@@ -3,6 +3,8 @@ require "rails_helper"
 RSpec.describe "User", type: :request do
   include Helpers
   let(:headers) { login }
+  let(:admin_headers){login_admin}
+
   describe "GET /index" do
     it "returns welcome message" do
       get "/"
@@ -113,15 +115,14 @@ RSpec.describe "User", type: :request do
 
   context "create_admin" do
     it "creates a new admin" do
-      admin = FactoryBot.create(:admin)
-      post "/create_admin/#{admin.id}", params: { user: { first_name: "Julius", last_name: "Ngwu", email: "julius@1", password: "julius@@1", user_type: "admin" } }, headers: headers
+      post "/create_admin", params: { user: { first_name: "Julius", last_name: "Ngwu", email: "julius@1", password: "julius@@1", user_type: "admin" } }, headers: admin_headers
       expect(response.content_type).to eq("application/json; charset=utf-8")
       expect(response).to have_http_status(:created)
     end
 
     it "fails to create a user if the opreation is not initiated by an admin" do
       user = FactoryBot.create(:user)
-      post "/create_admin/#{user.id}", params: { user: { first_name: "Julius", last_name: "Ngwu", email: "julius@1", password: "julius@@1", user_type: "admin" } }, headers: headers
+      post "/create_admin", params: { user: { first_name: "Julius", last_name: "Ngwu", email: "julius@1", password: "julius@@1", user_type: "admin" } }, headers: headers
       expect(response.content_type).to eq("application/json; charset=utf-8")
       expect(response).to have_http_status(:unauthorized)
     end
