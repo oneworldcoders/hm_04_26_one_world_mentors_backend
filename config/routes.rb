@@ -18,5 +18,7 @@ Rails.application.routes.draw do
   post "password/reset", to: "passwords#reset"
   post "create_admin/:id", to: "user#create_admin"
 
+  post "rate", to: "user#rate_mentor"
+
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 end

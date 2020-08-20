@@ -1,4 +1,8 @@
 FactoryBot.define do
+  factory :rating do
+    mark { "MyString" }
+  end
+
     factory :user, class: User do
         first_name { Faker::Name.first_name }
         last_name { Faker::Name.last_name }
@@ -23,7 +27,6 @@ FactoryBot.define do
 
   factory :mentor do
     user
-    availabe { Faker::Boolean.boolean }
   end
 
   factory :mentee do

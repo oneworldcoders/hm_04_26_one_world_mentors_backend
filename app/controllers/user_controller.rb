@@ -56,6 +56,16 @@ class UserController < ApplicationController
     end
   end
 
+  def rate_mentor
+    new_rate = Rating.new(rate_params)
+    if new_rate.valid?
+      new_rate.save
+      render json: { data: new_rate }, status: 201
+    else
+      render json: new_rate.errors.details, status: 500
+    end
+  end
+
   private
 
   def custom_compact(payload)
@@ -64,6 +74,10 @@ class UserController < ApplicationController
 
   def user_params
     params.require(:user).permit(:first_name, :last_name, :email, :password, :user_type)
+  end
+
+  def rate_params
+    params.permit(:mark, :mentee_id, :course_id, :mentor_id)
   end
 
   def encrypt_password(password)

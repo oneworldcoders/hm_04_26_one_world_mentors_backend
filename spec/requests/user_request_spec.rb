@@ -125,5 +125,25 @@ RSpec.describe "User", type: :request do
       expect(response.content_type).to eq("application/json; charset=utf-8")
       expect(response).to have_http_status(:unauthorized)
     end
+    context "rate_mentor" do
+      it "rate a mentor" do
+        mentee = FactoryBot.create(:mentee)
+        mentor = FactoryBot.create(:mentor)
+        course = FactoryBot.create(:course)
+
+        post "/rate", params: { mark: 5, mentee_id: mentee.id, course_id: course.id, mentor_id: mentor.id } , headers: headers
+        expect(response.content_type).to eq("application/json; charset=utf-8")
+        expect(response).to have_http_status(:created)
+      end
+
+      it "fails to rate a mentor mentor is not provided" do
+        mentee = FactoryBot.create(:mentee)
+        course = FactoryBot.create(:course)
+
+        post "/rate", params: { mark: 5, mentee_id: mentee.id, course_id: course.id } , headers: headers
+        expect(response.content_type).to eq("application/json; charset=utf-8")
+        expect(response.body).to include("error")
+      end
+    end
   end
 end
