@@ -55,6 +55,20 @@ class UserController < ApplicationController
     end
   end
 
+  def update_user_role
+    if @current_user["user_type"] != "admin"
+      return render json: { message: "Permission Denied " }, status: :unauthorized
+    end
+    user = User.find_by(:id => params[:id])
+    if user.present?
+      new_role = {:user_type => params[:user_type]}
+      user.update(new_role)
+      render json: { message: "User role updated succesfully", user: user }, status: 200
+    else
+      render json: { message: "User does not exist" }, status: 404
+    end
+  end
+
   def rate_mentor
     new_rate = Rating.new(rate_params)
     if new_rate.valid?
