@@ -7,4 +7,13 @@ module Helpers
     user_info = JSON.parse(response.body)
    { "Authorization" => "Bearer " + user_info["token"], "id" => user['id'] }
   end
+
+  def login_admin
+    user = FactoryBot.create(:admin)
+    post "/login", params: { "email" => user.email, "password" => TEST_PASSWORD }
+    user_info = JSON.parse(response.body)
+   { "Authorization" => "Bearer " + user_info["token"], "id" => user['id'] }
+  end
+
+
 end

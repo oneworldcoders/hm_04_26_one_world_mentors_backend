@@ -16,7 +16,7 @@ Rails.application.routes.draw do
 
   post "password/forgot", to: "passwords#forgot"
   post "password/reset", to: "passwords#reset"
-  post "create_admin/:id", to: "user#create_admin"
+  post "create_admin", to: "user#create_admin"
 
   post "rate", to: "user#rate_mentor"
 

@@ -41,6 +41,7 @@ class User < ApplicationRecord
     save!
   end
 
+
   private
 
   def generate_token
