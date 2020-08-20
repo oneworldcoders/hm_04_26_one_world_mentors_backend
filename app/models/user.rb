@@ -4,8 +4,8 @@ class User < ApplicationRecord
   end
 
   after_create do
-    Mentee.create(user_id: self.id) if self.user_type == 'mentee'
-    Mentor.create(user_id: self.id) if self.user_type == 'mentor'
+    Mentee.create(user_id: self.id) if self.user_type == "mentee"
+    Mentor.create(user_id: self.id) if self.user_type == "mentor"
   end
 
   validates :first_name, presence: true
