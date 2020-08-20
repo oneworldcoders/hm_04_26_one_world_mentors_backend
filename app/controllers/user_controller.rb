@@ -42,6 +42,10 @@ class UserController < ApplicationController
     render json: { url: upload_image["url"] }, status: :ok
   end
 
+  def create_admin
+    
+  end
+
   private
 
   def custom_compact(payload)
@@ -56,5 +60,7 @@ class UserController < ApplicationController
     encrypted_password = BCrypt::Password.create(password)
     @new_user.password = encrypted_password
   end
+
+
 
 end

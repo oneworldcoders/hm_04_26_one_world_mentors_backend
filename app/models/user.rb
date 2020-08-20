@@ -4,8 +4,8 @@ class User < ApplicationRecord
   end
 
   after_create do
-    Mentee.create(user_id: self.id) if self.user_type == 'mentee'
-    Mentor.create(user_id: self.id) if self.user_type == 'mentor'
+    Mentee.create(user_id: self.id) if self.user_type == "mentee"
+    Mentor.create(user_id: self.id) if self.user_type == "mentor"
   end
 
   validates :first_name, presence: true
@@ -39,6 +39,10 @@ class User < ApplicationRecord
     self.reset_password_token = nil
     self.password = password
     save!
+  end
+
+  def user_type
+    return :admin if (self.user_type == "admin")
   end
 
   private
