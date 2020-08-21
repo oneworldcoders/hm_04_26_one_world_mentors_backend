@@ -2,7 +2,7 @@ class CoursesController < ApplicationController
 
   def index
       courses = Course.all
-      render json:{courses: courses, subtracks: courses&.subtracks}, status: 200
+      render json:{courses: courses}, status: 200
   end
 
   def create
