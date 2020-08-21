@@ -32,6 +32,6 @@ class MenteeSubtracksController < ApplicationController
   def progress
     completed_count = @mentee_subtracks.where(completed: true).count
     all_count = @mentee_subtracks.count
-    progress = completed_count.to_f/all_count
+    progress = completed_count.to_f/all_count * 100
   end
 end
