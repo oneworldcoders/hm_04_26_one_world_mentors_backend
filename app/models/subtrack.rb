@@ -4,4 +4,6 @@ class Subtrack < ApplicationRecord
   validates :course_id, presence: true
 
   belongs_to :course
+  has_many :mentee_subtracks
+  has_many :mentees, through: :mentee_subtracks
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_08_20_145300) do
+ActiveRecord::Schema.define(version: 2020_08_21_073043) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -21,6 +21,16 @@ ActiveRecord::Schema.define(version: 2020_08_20_145300) do
     t.string "description", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "mentee_subtracks", force: :cascade do |t|
+    t.bigint "mentee_id", null: false
+    t.bigint "subtrack_id", null: false
+    t.boolean "completed", default: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["mentee_id"], name: "index_mentee_subtracks_on_mentee_id"
+    t.index ["subtrack_id"], name: "index_mentee_subtracks_on_subtrack_id"
   end
 
   create_table "mentees", force: :cascade do |t|
@@ -86,6 +96,8 @@ ActiveRecord::Schema.define(version: 2020_08_20_145300) do
     t.index ["email"], name: "index_users_on_email"
   end
 
+  add_foreign_key "mentee_subtracks", "mentees"
+  add_foreign_key "mentee_subtracks", "subtracks"
   add_foreign_key "mentees", "courses"
   add_foreign_key "mentees", "mentors"
   add_foreign_key "mentees", "users"

@@ -43,4 +43,9 @@ FactoryBot.define do
     description { Faker::Lorem.sentence }
     course
   end
+
+  factory :mentee_subtrack do
+    mentee
+    subtrack
+  end
 end

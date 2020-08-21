@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   resources :courses
   resources :subtracks
+  resources :mentee_subtracks
 
   root "user#index"
   get "user/index"
