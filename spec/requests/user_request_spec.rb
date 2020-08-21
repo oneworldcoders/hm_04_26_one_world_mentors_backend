@@ -146,5 +146,29 @@ RSpec.describe "User", type: :request do
         expect(response.body).to include("error")
       end
     end
+
+    context "update_user_role" do
+      it "update a user role" do
+        user = FactoryBot.create(:user)
+        patch "/admin/user_role/#{user.id}", params: { user_type: "admin" }, headers: admin_headers
+        expect(response.content_type).to eq("application/json; charset=utf-8")
+        expect(response.body).to include("User role updated succesfully")
+        expect(response).to have_http_status(:ok)
+      end
+  
+      it "fails to update a user role if the opreation is not initiated by an admin" do
+        user = FactoryBot.create(:user)
+        patch "/admin/user_role/#{user.id}", params: { user_type: "admin" }, headers: headers
+        expect(response.content_type).to eq("application/json; charset=utf-8")
+        expect(response).to have_http_status(:unauthorized)
+      end
+
+      it "fails if user does not exist" do
+        patch "/admin/user_role/600", params: { user_type: "admin" }, headers: admin_headers
+        expect(response.content_type).to eq("application/json; charset=utf-8")
+        expect(response.body).to include("User does not exist")
+        expect(response).to have_http_status(:not_found)
+      end
+    end
   end
 end
