@@ -61,7 +61,7 @@ class UserController < ApplicationController
     end
     user = User.find_by(:id => params[:id])
     if user.present?
-      new_role = {:user_type => params[:user_type]}
+      new_role = { :user_type => params[:user_type] }
       user.update(new_role)
       render json: { message: "User role updated succesfully", user: user }, status: 200
     else
@@ -73,6 +73,17 @@ class UserController < ApplicationController
     new_rate = Rating.new(rate_params)
     if new_rate.valid?
       new_rate.save
+
+      ratings = Rating.where(mentor_id: new_rate.mentor_id, course_id: new_rate.course_id)
+
+      total_rate = ratings.sum { |a| a.mark }
+
+      average_rate = total_rate / ratings.length
+
+      mentor_course = MentorCourse.where(mentor_id: new_rate.mentor_id, course_id: new_rate.course_id)
+      new_average_rate = { :average_rate => average_rate }
+      mentor_course.update(new_average_rate)
+
       render json: { data: new_rate }, status: 201
     else
       render json: new_rate.errors.details, status: 500

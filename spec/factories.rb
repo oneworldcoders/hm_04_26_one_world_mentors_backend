@@ -36,6 +36,8 @@ FactoryBot.define do
   factory :mentor_course do
     course
     mentor
+    average_rate { 3 }
+
   end
 
   factory :subtrack do
