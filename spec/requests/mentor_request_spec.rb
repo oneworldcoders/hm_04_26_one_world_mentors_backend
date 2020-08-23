@@ -2,7 +2,7 @@ require "rails_helper"
 
 RSpec.describe "Users", type: :request do
   include Helpers
-  let(:headers){login}
+  let(:headers) { login }
   describe "GET /mentors" do
     it "should return error message if token is not present" do
       get "/mentors", headers: {}
@@ -24,6 +24,13 @@ RSpec.describe "Users", type: :request do
       expect(mentors["mentors"].first["last_name"]).to eq("tyson")
       expect(mentors["mentors"].first["email"]).to eq("rm@mail.com")
       expect(mentors["mentors"].first["user_type"]).to eq("mentor")
+    end
+  end
+  context "average_rating" do
+    it "returns a single mentor's course rating" do
+      mentor_course = FactoryBot.create(:mentor_course)
+      get "/ratings/#{mentor_course.id}", headers: headers
+      expect(response).to have_http_status(:success)
     end
   end
 end

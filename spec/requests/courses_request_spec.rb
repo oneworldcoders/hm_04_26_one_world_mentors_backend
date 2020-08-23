@@ -3,6 +3,7 @@ require 'rails_helper'
 RSpec.describe "Courses", type: :request do
   include Helpers
   let(:headers){login}
+  let(:admin_headers){login_admin}
 
   describe "GET /courses" do
     it "returns empty list of courses" do
@@ -25,13 +26,17 @@ RSpec.describe "Courses", type: :request do
 
     context "create course" do
       it "creates a course" do
-        post "/courses", params: { course: { name: "Javascript", courseCode: "JS101", description: "JS for web development"  } }, headers: headers
+        post "/courses", params: { course: { name: "Javascript", courseCode: "JS101", description: "JS for web development"  } }, headers: admin_headers
         expect(response.content_type).to eq("application/json; charset=utf-8")
         expect(response).to have_http_status(:created)
         courses = JSON.parse(response.body)
         expect(courses["courseCode"]).to eq("JS101")
         expect(courses["name"]).to eq("Javascript")
         expect(courses["description"]).to eq("JS for web development")
+      end
+      it"fails to creates a course" do
+        post "/courses", params: { course: { name: "Javascript", courseCode: "JS101", description: "JS for web development"  } }, headers: headers
+        expect(response.body).to include("Permission Denied")
       end
       it "fails to creates a course" do
         headers = { "ACCEPT" => "application/json" }
@@ -53,7 +58,7 @@ RSpec.describe "Courses", type: :request do
       courses = JSON.parse(response.body)
       expected = {"course"=>nil}
       expect(response).to have_http_status(:success)
-      expect(courses).to eq(expected)
+      expect(courses).to include(expected)
     end
 
     it "returns the course " do
@@ -62,6 +67,19 @@ RSpec.describe "Courses", type: :request do
       expect(courses["course"]["courseCode"]).to eq(course_code)
       expect(courses["course"]["name"]).to eq(course_name)
       expect(courses["course"]["description"]).to eq(course_description)
+    end
+
+    it "response contains subtracks" do
+      get "/courses/#{course_id}", headers: headers
+      courses = JSON.parse(response.body)
+      expect(courses).to include('subtracks')
+    end
+
+    it "returns the subtracks for the course " do
+      subtrack = FactoryBot.create(:subtrack, course: course)
+      get "/courses/#{course_id}", headers: headers
+      courses = JSON.parse(response.body)
+      expect(courses["subtracks"].first["id"]).to eq(subtrack.id)
     end
   end
 end

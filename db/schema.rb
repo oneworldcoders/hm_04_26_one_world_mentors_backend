@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_07_24_144039) do
+ActiveRecord::Schema.define(version: 2020_08_21_073043) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -21,6 +21,16 @@ ActiveRecord::Schema.define(version: 2020_07_24_144039) do
     t.string "description", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "mentee_subtracks", force: :cascade do |t|
+    t.bigint "mentee_id", null: false
+    t.bigint "subtrack_id", null: false
+    t.boolean "completed", default: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["mentee_id"], name: "index_mentee_subtracks_on_mentee_id"
+    t.index ["subtrack_id"], name: "index_mentee_subtracks_on_subtrack_id"
   end
 
   create_table "mentees", force: :cascade do |t|
@@ -37,6 +47,7 @@ ActiveRecord::Schema.define(version: 2020_07_24_144039) do
   create_table "mentor_courses", force: :cascade do |t|
     t.bigint "mentor_id", null: false
     t.bigint "course_id", null: false
+    t.integer "average_rate"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["course_id"], name: "index_mentor_courses_on_course_id"
@@ -49,6 +60,27 @@ ActiveRecord::Schema.define(version: 2020_07_24_144039) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["user_id"], name: "index_mentors_on_user_id"
+  end
+
+  create_table "ratings", force: :cascade do |t|
+    t.integer "mark"
+    t.bigint "mentee_id", null: false
+    t.bigint "mentor_id", null: false
+    t.bigint "course_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["course_id"], name: "index_ratings_on_course_id"
+    t.index ["mentee_id"], name: "index_ratings_on_mentee_id"
+    t.index ["mentor_id"], name: "index_ratings_on_mentor_id"
+  end
+
+  create_table "subtracks", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "description", null: false
+    t.bigint "course_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["course_id"], name: "index_subtracks_on_course_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -65,10 +97,16 @@ ActiveRecord::Schema.define(version: 2020_07_24_144039) do
     t.index ["email"], name: "index_users_on_email"
   end
 
+  add_foreign_key "mentee_subtracks", "mentees"
+  add_foreign_key "mentee_subtracks", "subtracks"
   add_foreign_key "mentees", "courses"
   add_foreign_key "mentees", "mentors"
   add_foreign_key "mentees", "users"
   add_foreign_key "mentor_courses", "courses"
   add_foreign_key "mentor_courses", "mentors"
   add_foreign_key "mentors", "users"
+  add_foreign_key "ratings", "courses"
+  add_foreign_key "ratings", "mentees"
+  add_foreign_key "ratings", "mentors"
+  add_foreign_key "subtracks", "courses"
 end

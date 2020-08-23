@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
   resources :courses
+  resources :subtracks
+  resources :mentee_subtracks
 
   root "user#index"
   get "user/index"
@@ -16,5 +18,11 @@ Rails.application.routes.draw do
 
   post "password/forgot", to: "passwords#forgot"
   post "password/reset", to: "passwords#reset"
+  post "create_admin", to: "user#create_admin"
+  post "rate", to: "user#rate_mentor"
+  patch "admin/user_role/:id", to: "user#update_user_role"
+
+  get "ratings/:mentorId", to: "mentors#average_rating"
+
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 end
